@@ -125,6 +125,8 @@ class BankHandler:
             raise TypeError("with_fee must be boolean")
         if not (isinstance(amount, int) or isinstance(amount, float)):
             raise BankAccountError("Balance must be integer or float")
+        if amount < 0:
+            raise BankAccountError("Amount must be >= 0")
 
         bank = Variable.get('bank')
 
