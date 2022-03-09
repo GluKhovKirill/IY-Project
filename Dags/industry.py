@@ -1,6 +1,3 @@
-
-<<<<<<< Updated upstream
-=======
 class IndustryAmountError(TypeError):
     """Amount must be at least 0"""
     pass
