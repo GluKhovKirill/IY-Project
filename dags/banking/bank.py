@@ -39,8 +39,12 @@ class Account:
         :param bool is_active:
         """
         # TODO: Add UID validation
-        if not isinstance(uid, int):
-            raise TypeError("UID must be integer")
+        try:
+            uid = int(uid)
+            if not isinstance(uid, int):
+                raise TypeError("UID must be integer")
+        except ValueError as err:
+            raise TypeError(f"UID must be integer; ({err})")
         if not isinstance(is_active, bool):
             raise TypeError("IsActive must be integer")
         self.__uid, self.__is_active = uid, is_active
@@ -49,8 +53,8 @@ class Account:
         return self.__uid
 
     def get_balance(self) -> float:
-        incoming = Variable.get('incoming_transactions', default_var=[])
-        outgoing = Variable.get('outgoing_transactions', default_var=[])
+        incoming = json.loads(Variable.get('incoming_transactions', default_var=[]))
+        outgoing = json.loads(Variable.get('outgoing_transactions', default_var=[]))
 
         incoming_filtered = filter(lambda x: x[1] == self.__uid, incoming)
         outgoing_filtered = filter(lambda x: x[1] == self.__uid, outgoing)
@@ -66,15 +70,15 @@ class Account:
             return
         transaction = (from_account_uid, self.get_uid(), abs(balance))
 
-        incoming = Variable.get('incoming_transactions', default_var=[])
-        outgoing = Variable.get('outgoing_transactions', default_var=[])
+        incoming = json.loads(Variable.get('incoming_transactions', default_var=[]))
+        outgoing = json.loads(Variable.get('outgoing_transactions', default_var=[]))
 
         if balance > 0:
             incoming.append(transaction)
-            Variable.set('incoming_transactions', incoming)
+            Variable.set('incoming_transactions', json.dumps(incoming))
         else:
             outgoing.append(transaction)
-            Variable.set('outgoing_transactions', outgoing)
+            Variable.set('outgoing_transactions', json.dumps(outgoing))
 
 
     pass
@@ -83,14 +87,14 @@ class Account:
 class Bank:
     @staticmethod
     def get_commission() -> float:
-        return Variable.get('transaction_commission', 0)
+        return json.loads(Variable.get('transaction_commission', 0))
 
     @staticmethod
     def load_account(uid):
         return Account(uid=uid, is_active=True)
 
     def __init__(self) -> None:
-        self.bank_uid = Variable.get('bank_uid', default_var=1)
+        self.bank_uid = json.loads(Variable.get('bank_uid', default_var=1))
         self.accounts = [self.load_account(self.bank_uid)]
         self.accounts[0].commit_transaction(0,1000)
     '''
@@ -150,12 +154,10 @@ class BankHandler:
         if amount < 0:
             raise BankAccountError("Amount must be >= 0")
 
-        bank = Variable.get('bank')
-
         fee = 0
         if with_fee:
-            fee = bank.get_commission() * amount
-            bank_account = bank.get_bank_account()
+            fee = json.loads(Variable.get('bank_fee')) * amount
+            bank_account = json.loads(Variable.get())
 
         new_value_a = -amount
         new_value_b = (amount-fee)
