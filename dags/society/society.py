@@ -12,11 +12,11 @@ class Person:
             self.sex = sex
             self.sex = random.randint(1,2)
             
-        if type(age) == int:
+        if type(age) == int and 15 < age < 100:
             self.age = age
         else:
             self.age = age
-            self.age = random.randint(1, 99)
+            self.age = random.randint(16, 99)
             
         if type(home) == int and 0 < home < 3:
             self.home = home
@@ -42,11 +42,11 @@ class Person:
             self.budget= budget
             self.budget = random.randint(1,3)        
             
-        if type(family) == int:
+        if type(family) == int and family < 5:
             self.family = family
         else:
             self.family = family
-            self.family = random.randint(1,5)
+            self.family = random.randint(0,5)
             
         if type(lifestyle) == int and 0 < lifestyle < 4:
             self.lifestyle = lifestyle
@@ -89,7 +89,18 @@ class Person:
         elif self.budget == 2:
             self.budget = random.randint(31000, 80000)
         else:
-            self.budget = random.randint(81000, 150000)     
+            self.budget = random.randint(81000, 150000)
+            
+        if self.family == 0:
+            self.family = "lonely"
+        elif self.family == 1:
+            self.family = "married"
+        else:
+            children = self.family - 1
+            if children != 1:
+                self.family = "married, has " + str(children) + " children"
+            else:
+                self.family = "married, has " + str(children) + " child"
             
         if self.lifestyle == 1:
             self.lifestyle = "healthy"
@@ -116,8 +127,10 @@ class Person:
         
         
         
-pers1 = Person(1234, 1, 43, 34, 1, 1, 1, 1, 1, 45)
+pers1 = Person(1234, 644536, 2421212, 34, 1000, 1122, 1434, 1656, 1575, 4575)
 pers2 = Person(1234, 1, 46, 34, 1, 1, 1, 1, 1, 45)
 print(pers1.stats())
-pers1.salary()
-print(pers1.stats())
+#pers1.salary()
+#print(pers1.stats())
+#pers1.salary()
+#print(pers1.stats())
