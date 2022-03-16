@@ -3,7 +3,7 @@ import json
 
 
 class Person:
-    def __init__(self, ID, sex, age, home, income, outcome, family, lifestyle, confidence):
+    def __init__(self, ID, sex, age, home, income, outcome, budget, family, lifestyle, confidence):
         self.ID = ID
         
         if type(sex) == int and 0 < sex < 3:
@@ -29,12 +29,18 @@ class Person:
         else:
             self.income = income
             self.income = random.randint(1,3)
-            
+        
         if type(outcome) == int and 0 < outcome < 4:
             self.outcome = outcome
         else:
             self.outcome = outcome
             self.outcome = random.randint(1,3)        
+            
+        if type(budget) == int and 0 < budget < 4:
+            self.budget = budget
+        else:
+            self.budget= budget
+            self.budget = random.randint(1,3)        
             
         if type(family) == int:
             self.family = family
@@ -65,11 +71,11 @@ class Person:
             self.home = "village"
             
         if self.income == 1:
-            self.income = "poor"
+            self.income = random.randint(15000, 35000)
         elif self.income == 2:
-            self.income = "average"
+            self.income = random.randint(50000, 80000)
         else:
-            self.income = "rich"
+            self.income = random.randint(100000, 200000)
             
         if self.outcome == 1:
             self.outcome = "economy"
@@ -77,6 +83,13 @@ class Person:
             self.outcome = "normal"
         else:
             self.outcome = "overdraft"
+            
+        if self.budget == 1:
+            self.budget = random.randint(12000, 30000)
+        elif self.budget == 2:
+            self.budget = random.randint(31000, 80000)
+        else:
+            self.budget = random.randint(81000, 150000)     
             
         if self.lifestyle == 1:
             self.lifestyle = "healthy"
@@ -98,10 +111,13 @@ class Person:
         test_json = json.dumps(test_dict)        
         return test_json
 
+    def salary(self):
+        self.budget += self.income
         
         
         
-pers1 = Person(1234, 1, 43, 34, 1, 1, 1, 1, 45)
-pers2 = Person(1234, 1, 46, 34, 1, 1, 1, 1, 45)
+pers1 = Person(1234, 1, 43, 34, 1, 1, 1, 1, 1, 45)
+pers2 = Person(1234, 1, 46, 34, 1, 1, 1, 1, 1, 45)
 print(pers1.stats())
-print(pers2.stats())
+pers1.salary()
+print(pers1.stats())
