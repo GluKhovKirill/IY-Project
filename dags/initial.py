@@ -23,6 +23,7 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.models import Variable
 from banking import bank
+from industry import IndustryHandler
 import json
 
 
